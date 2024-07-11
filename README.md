@@ -2,9 +2,28 @@
 
 _**dcache** is a data cache for [TRMNL](https://usetrmnl.com/)._
 
-It receives data from [Home Assistant](https://www.home-assistant.io/) (or other sources) and provides it consolidated to [TRMNL-Plugins](https://help.usetrmnl.com/en/articles/9510536-custom-plugins) (or other targets).
+It receives data from [Home Assistant](https://www.home-assistant.io/) (or other sources) and provides it in a consolidated way to [TRMNL-Plugins](https://help.usetrmnl.com/en/articles/9510536-custom-plugins) (or other targets).
+
+A typical flow could look like this:
+
+* HA provides `temperature=25`
+* HA provides `humidity=65`
+* TRMNL receives `{ temperature=25, humidity=65 }`
+* HA provides `fan=on`
+* HA provides `humidity=40`
+* TRMNL receives `{ temperature=25, humidity=40, fan=on }`
+
+dcache provides a REST API to send and receive data as well as an user interface to view the current data.
+Each connection-pair is identified by an unique user defined token.
+Multiple connections are possible in parallel.
+
+## Server Usage
+
+Simply upload the `src` folder to your PHP enabled webserver and open the related address in a browser.
 
 ## Development Setup
+
+Local development on Windows requires the following setup:
 
 * Install Git, NodeJs and VSCode.
 * Clone the GitHub repo `https://github.com/ramdacxp/dcache` in VSCode.
@@ -15,8 +34,10 @@ The installation can be repeated by executing the related `install-xxx.cmd` batc
 
 All tools can be removed safely by deleting the `bin` and `node_modules` sub-folders.
 
-## Run it
+## Run it locally
 
-* Execute `npm start` -or- choose `Terminal > Run Build Task...` in VSCode.
+* Execute `npm start` or choose `Terminal > Run Build Task...` in VSCode.
 * Open the local dev webserver <http://localhost:8080/> in your browser.
 * Stop the servers by pressing `Ctrl-C` in the Terminal window.
+
+If the settings file `src/settings.php` is missing, a settings form is shown on the website to interactively configure the database connection. Simply accept the default values if using the development servers. Once configured, the form is no longer available. To revert the configuration, the settings file `src/settings.php` needs to be removed.
