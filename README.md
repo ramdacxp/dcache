@@ -40,4 +40,24 @@ All tools can be removed safely by deleting the `bin` and `node_modules` sub-fol
 * Open the local dev webserver <http://localhost:8080/> in your browser.
 * Stop the servers by pressing `Ctrl-C` in the Terminal window.
 
-If the settings file `src/settings.php` is missing, a settings form is shown on the website to interactively configure the database connection. Simply accept the default values if using the development servers. Once configured, the form is no longer available. To revert the configuration, the settings file `src/settings.php` needs to be removed.
+## Settings
+
+If the settings file `src/settings.php` is missing, a settings form is shown on the website to interactively configure the database connection.
+Simply accept the default values if using the development servers.
+Once configured, the form is no longer available. To revert the configuration, the settings file `src/settings.php` needs to be removed.
+
+The default `src/settings.php` will have the following content:
+
+```php
+<?php
+$settings = [];
+$settings["server"] = "localhost";
+$settings["user"] = "root";
+$settings["password"] = "";
+$settings["database"] = "dcache";
+$settings["prefix"] = "dc-";
+```
+
+## License
+
+See [LICENSE](LICENSE).
