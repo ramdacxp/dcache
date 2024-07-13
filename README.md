@@ -2,7 +2,7 @@
 
 _**dcache** is a data cache for [TRMNL](https://usetrmnl.com/)._
 
-It receives data from [Home Assistant](https://www.home-assistant.io/) (or other sources) and provides it in a consolidated way to [TRMNL-Plugins](https://help.usetrmnl.com/en/articles/9510536-custom-plugins) (or other targets).
+It receives data from [Home Assistant](https://www.home-assistant.io/) (or other sources) and provides it as a consolidated `JSON Object` to [TRMNL-Plugins](https://help.usetrmnl.com/en/articles/9510536-custom-plugins) (or other targets).
 
 A typical flow could look like this:
 
@@ -16,6 +16,10 @@ A typical flow could look like this:
 dcache provides a REST API to send and receive data as well as an user interface to view the current data.
 Each connection-pair is identified by an unique user defined token.
 Multiple connections are possible in parallel.
+
+![dcache Table View](doc/tableview.png)
+
+A running demo is available at: <https://dcache.schademarmelade.de/>.
 
 ## Server Usage
 
@@ -56,10 +60,9 @@ The default `src/settings.php` will have the following content:
 ```php
 <?php
 $settings = [];
-$settings["server"] = "localhost";
+$settings["database"] = "mysql:host=localhost;dbname=dcache";
 $settings["user"] = "root";
 $settings["password"] = "";
-$settings["database"] = "dcache";
 $settings["prefix"] = "dc-";
 ```
 
