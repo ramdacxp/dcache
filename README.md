@@ -19,7 +19,7 @@ Multiple connections are possible in parallel.
 
 ## Server Usage
 
-Simply upload the `src` folder to your PHP enabled webserver and open the related address in a browser.
+Simply upload the `www` folder to your PHP enabled webserver and open the related address in a browser.
 
 ## Development Setup
 
@@ -29,12 +29,17 @@ Local development on Windows requires the following setup:
 * Clone the GitHub repo `https://github.com/ramdacxp/dcache` in VSCode.
 * Open the created local folder in VSCode and confirm the installation of all recommended extensions.
 * Install PHP and MariaDB locally into a `bin` subfolder by executing `npm install`.
+* Import database test data via `reset-testdata.cmd`.
 
-The installation can be repeated by executing the related `install-xxx.cmd` batch files. No system wide settings are modified during the installation.
+The installation can be repeated by executing the related `install-xxx.cmd` batch files.
+No system wide settings are modified during the installation.
+
+The database content can be reset to the initial test data with `reset-testdata.cmd`.
+Already existing data in dcache tables will be removed!
 
 All tools can be removed safely by deleting the `bin` and `node_modules` sub-folders.
 
-## Run it locally
+## Run dcache locally
 
 * Execute `npm start` or choose `Terminal > Run Build Task...` in VSCode.
 * Open the local dev webserver <http://localhost:8080/> in your browser.
