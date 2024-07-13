@@ -29,8 +29,8 @@ $config->loadIfConfigured();
       <!-- Show DB settings of form -->
       <?php if ($config->isConfigured()) { ?>
         <p>
-          Data is accessed via
-          <code><?= $config->DatabaseUser ?>@<?= $config->DatabaseName ?></code>
+          Using database
+          <code><?= $config->DatabaseName ?></code>
           on server
           <code><?= $config->DatabaseServer ?></code>.
         </p>
@@ -40,7 +40,7 @@ $config->loadIfConfigured();
 
     </main>
 
-    <footer class="text-gray-500 rounded-b-lg p-4 shadow-lg text-center border-t border-gray-400">
+    <footer class="text-gray-500 bg-gray-200 rounded-b-lg p-4 shadow-lg text-center border-t border-gray-300">
       Copyright &copy; 2024 Michael Hoser
       &mdash;
       Made with 🖤 on <a href="https://github.com/ramdacxp/dcache" class="hover:underline">GitHub</a>.
