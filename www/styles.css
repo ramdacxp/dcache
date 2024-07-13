@@ -665,6 +665,10 @@ form input[type=submit]:focus {
   margin-top: 1rem;
 }
 
+.table {
+  display: table;
+}
+
 .rounded-b-lg {
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;

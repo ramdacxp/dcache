@@ -3,11 +3,11 @@
 class Config
 {
   public $ConfigFilename = __DIR__ . DIRECTORY_SEPARATOR . 'settings.php';
-  public $DatabaseServer = "";
-  public $DatabaseUser = "";
-  public $DatabasePassword = "";
-  public $DatabaseName = "";
-  public $DatabasePrefix = "";
+
+  public $DbConfig = "";
+  public $DbUser = "";
+  public $DbPassword = "";
+  public $DbPrefix = "";
 
   public function isConfigured(): bool
   {
@@ -23,11 +23,10 @@ class Config
   {
     if (!$this->isConfigured()) return false;
     require_once $this->ConfigFilename;
-    $this->DatabaseServer = $settings['server'];
-    $this->DatabaseUser = $settings['user'];
-    $this->DatabasePassword = $settings['password'];
-    $this->DatabaseName = $settings['database'];
-    $this->DatabasePrefix = $settings['prefix'];
+    $this->DbConfig = $settings['database'];
+    $this->DbUser = $settings['user'];
+    $this->DbPassword = $settings['password'];
+    $this->DbPrefix = $settings['prefix'];
     return true;
   }
 
@@ -35,19 +34,18 @@ class Config
   {
     if ($this->isConfigured()) return false;
     if (!$this->canBeConfigured()) return false;
-    if (!isset($_GET['db-server'])) return false;
-    if (!isset($_GET['db-user'])) return false;
-    if (!isset($_GET['db-pwd'])) return false;
-    if (!isset($_GET['db-name'])) return false;
-    if (!isset($_GET['db-prefix'])) return false;
+    if (!isset($_POST['init-config'])) return false;
+    if (!isset($_POST['db-config'])) return false;
+    if (!isset($_POST['db-user'])) return false;
+    if (!isset($_POST['db-pwd'])) return false;
+    if (!isset($_POST['db-prefix'])) return false;
 
     $settings = "<" . "?php\n"
       . "\$settings = [];\n"
-      . $this->getSettingsArrayStatement('server', $_GET['db-server'])
-      . $this->getSettingsArrayStatement('user', $_GET['db-user'])
-      . $this->getSettingsArrayStatement('password', $_GET['db-pwd'])
-      . $this->getSettingsArrayStatement('database', $_GET['db-name'])
-      . $this->getSettingsArrayStatement('prefix', $_GET['db-prefix']);
+      . $this->getSettingsArrayStatement('database', $_POST['db-config'])
+      . $this->getSettingsArrayStatement('user', $_POST['db-user'])
+      . $this->getSettingsArrayStatement('password', $_POST['db-pwd'])
+      . $this->getSettingsArrayStatement('prefix', $_POST['db-prefix']);
 
     file_put_contents($this->ConfigFilename, $settings);
     return true;

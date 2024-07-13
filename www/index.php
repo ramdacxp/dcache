@@ -1,9 +1,11 @@
 <?php
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'config.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'database.php';
 
 $config = new Config();
 $config->saveSettingsForm();
 $config->loadIfConfigured();
+$db = new Database($config);
 ?>
 <!doctype html>
 <html>
@@ -29,13 +31,16 @@ $config->loadIfConfigured();
       <!-- Show DB settings of form -->
       <?php if ($config->isConfigured()) { ?>
         <p>
-          Using database
-          <code><?= $config->DatabaseName ?></code>
-          on server
-          <code><?= $config->DatabaseServer ?></code>.
+          This <i>dcache</i> holds
+          <code><?= $db->getNumberOfRows() ?></code> values in
+          <code><?= $db->getNumberOfTokens() ?></code> sets.
         </p>
       <?php } else if ($config->canBeConfigured()) {
-        include __DIR__ . DIRECTORY_SEPARATOR . 'settings-form.php';
+        include __DIR__ . DIRECTORY_SEPARATOR . 'form-settings.php';
+      } ?>
+
+      <!--  -->
+      <?php if ($config->isConfigured()) {
       } ?>
 
     </main>
