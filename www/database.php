@@ -7,13 +7,14 @@ class Database
 
   public function __construct(Config $config)
   {
-    $this->pdo = new PDO(
-      $config->DbConfig,
-      $config->DbUser,
-      $config->DbPassword
-    );
-
-    $this->prefix = $config->DbPrefix;
+    if ($config->DbConfig !== "") {
+      $this->pdo = new PDO(
+        $config->DbConfig,
+        $config->DbUser,
+        $config->DbPassword
+      );
+      $this->prefix = $config->DbPrefix;
+    }
   }
 
   public function getNumberOfRows(): int
@@ -29,5 +30,4 @@ class Database
     $stmt->execute();
     return $stmt->rowCount();
   }
-
 }
