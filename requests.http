@@ -51,6 +51,10 @@ GET {{server}}/api.php?token=testdata&property=doesnotexist HTTP/1.1
 ### -> 200 (ok) string response
 GET {{server}}/api.php?token=testdata&property=firstname HTTP/1.1
 
+### GET with correct token, property, and value
+### -> 200 (ok) updated JSON object response
+GET {{server}}/api.php?token=testdata&property=firstname&value=Egon HTTP/1.1
+
 ### ============================================================================
 ### SET/UPDATE DATA
 ### ============================================================================

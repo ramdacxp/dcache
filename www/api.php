@@ -17,7 +17,11 @@ $db = new Database($config);
 
 switch ($_SERVER['REQUEST_METHOD']) {
   case "GET":
-    handleGet($db, $_REQUEST['token'], $_REQUEST['property']);
+    if (isset($_REQUEST['value'])) {
+      handleGetUpdate($db, $_REQUEST['token'], $_REQUEST['property'], $_REQUEST['value']);
+    } else {
+      handleGet($db, $_REQUEST['token'], $_REQUEST['property']);
+    }
     break;
 
   case "POST":
@@ -77,6 +81,22 @@ function handleGet($db, $token, $property)
       Rest::respondError(Rest::CODE_404_NOT_FOUND, "Dataset not found.");
     }
   }
+}
+
+function handleGetUpdate($db, $token, $property, $value)
+{
+  if (!validateToken($token)) return false;
+
+  if (!isset($property) || is_null($property) || empty($property)) {
+    Rest::respondError(Rest::CODE_400_BAD_REQUEST, "No property given.");
+    return false;
+  }
+
+  $db->deleteProperty($token, $property);
+  $db->insertProperty($token, $property, $value);
+
+  $data = $db->getData($token);
+  Rest::respond(Rest::CODE_200_OK, $data);
 }
 
 function handlePost($db, $token, $contentType)
