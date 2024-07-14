@@ -8,7 +8,6 @@
 
 @server = http://127.0.0.1:8080
 
-
 ### GENERAL REQUESTS
 ### ============================================================================
 
@@ -33,7 +32,19 @@ GET {{server}}/api.php?token=wrongToken HTTP/1.1
 ### -> 200 (ok) JSON object response
 GET {{server}}/api.php?token=testdata HTTP/1.1
 
+### GET with correct token and non-existing property
+### -> 404 (not found) null response
+GET {{server}}/api.php?token=testdata&property=doesnotexist HTTP/1.1
+
+### GET with correct token and property
+### -> 200 (ok) string response
+GET {{server}}/api.php?token=testdata&property=firstname HTTP/1.1
+
 ### SET DATA
 ### ============================================================================
 
-# Todo
+POST {{server}}/api.php?token=testdata HTTP/1.1
+
+### END USER WEBSITE
+### ============================================================================
+GET {{server}}/ HTTP/1.1

@@ -1,9 +1,11 @@
-<h2>View Data</h2>
+<h2>Dataset Details</h2>
 
 <p>
   The <i>data set</i> related to the token
   <code><?= $_GET['token'] ?></code>
-  contains the following properties:
+  contains the following
+  <code><?= count($data) ?></code>
+  properties:
 </p>
 
 <table class="datatable mt-4">

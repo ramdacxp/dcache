@@ -33,24 +33,33 @@ if ($config->isConfigured()) {
 
     <main class="bg-white shadow-x-lg p-4">
 
-      <!-- Settings form of status -->
-      <?php if ($config->isConfigured()) { ?>
+      <?php
+      if (!$config->isConfigured()) {
+        if ($config->canBeConfigured()) {
+          include __DIR__ . DIRECTORY_SEPARATOR . 'form-settings.php';
+        }
+      } else {
+        // START CONFIGURED SERVER =============================================
+      ?>
+
+        <!-- Status -->
         <p>
           This <i>dcache</i> holds
           <code><?= $db->getNumberOfRows() ?></code> properties in
           <code><?= $db->getNumberOfTokens() ?></code> data sets.
         </p>
-      <?php } else if ($config->canBeConfigured()) {
-        include __DIR__ . DIRECTORY_SEPARATOR . 'form-settings.php';
-      } ?>
 
-      <!-- Query token or display data -->
-      <?php if ($config->isConfigured()) {
-        if ($_GET['action'] === 'show' && $data !== null) {
+        <!-- Forms -->
+        <?php
+        if ($data !== null) {
           include __DIR__ . DIRECTORY_SEPARATOR . 'form-show.php';
         } else {
           include __DIR__ . DIRECTORY_SEPARATOR . 'form-token.php';
         }
+        ?>
+
+      <?php
+        // END CONFIGURED SERVER ===============================================
       } ?>
 
     </main>
