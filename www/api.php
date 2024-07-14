@@ -38,35 +38,50 @@ exit();
 
 // =============================================================================
 
+function validateToken($token): bool
+{
+  if (!isset($token) || is_null($token) || empty($token)) {
+    Rest::respondError(Rest::CODE_400_BAD_REQUEST, "No token given.");
+    return false;
+  }
+
+  if (strlen($token) < 8) {
+    Rest::respondError(Rest::CODE_400_BAD_REQUEST, "Token is too short. Must be at least 8 characters long.");
+    return false;
+  }
+
+  if (!preg_match('/^[a-zA-Z0-9\.-]+$/', $token)) {
+    Rest::respondError(Rest::CODE_400_BAD_REQUEST, "Token contains invalid characters. Only letters, numbers, dots and dashes are allowed.");
+    return false;
+  }
+
+  return true;
+}
+
 function handleGet($db, $token, $property)
 {
-  if (!isset($token)) {
-    Rest::respondError(Rest::CODE_400_BAD_REQUEST, "No token given.");
-  } else {
-    $data = $db->getData($token);
+  if (!validateToken($token)) return;
 
-    if (isset($property)) {
-      if (isset($data[$property])) {
-        Rest::respond(Rest::CODE_200_OK, $data[$property]);
-      } else {
-        Rest::respond(Rest::CODE_404_NOT_FOUND, null);
-      }
+  $data = $db->getData($token);
+
+  if (isset($property)) {
+    if (isset($data[$property])) {
+      Rest::respond(Rest::CODE_200_OK, $data[$property]);
     } else {
-      if ($data !== null) {
-        Rest::respond(Rest::CODE_200_OK, $data);
-      } else {
-        Rest::respond(Rest::CODE_404_NOT_FOUND, null);
-      }
+      Rest::respondError(Rest::CODE_404_NOT_FOUND, "Property not found in dataset.");
+    }
+  } else {
+    if ($data !== null) {
+      Rest::respond(Rest::CODE_200_OK, $data);
+    } else {
+      Rest::respondError(Rest::CODE_404_NOT_FOUND, "Dataset not found.");
     }
   }
 }
 
 function handlePost($db, $token, $contentType)
 {
-  if (!isset($token)) {
-    Rest::respondError(Rest::CODE_400_BAD_REQUEST, "No token given.");
-    return;
-  }
+  if (!validateToken($token)) return;
 
   if ($contentType !== "application/json") {
     Rest::respondError(Rest::CODE_400_BAD_REQUEST, "Invalid content type. Expected application/json.");
@@ -79,7 +94,7 @@ function handlePost($db, $token, $contentType)
     return;
   }
 
-  // update all givent properties
+  // update all given properties
   foreach ($input as $key => $value) {
     $db->deleteProperty($token, $key);
     $db->insertProperty($token, $key, $value);
@@ -92,24 +107,13 @@ function handlePost($db, $token, $contentType)
 
 function handleDelete($db, $token, $name = null)
 {
-  if (!isset($token) || is_null($token) || empty($token)) {
-    Rest::respondError(Rest::CODE_400_BAD_REQUEST, "No token given.");
-    return;
-  }
+  if (!validateToken($token)) return;
 
   if (!empty($name)) {
-    // delete singe property only
-    if ($db->deleteProperty($token, $name)) {
-      Rest::respond(Rest::CODE_200_OK, true);
-    } else {
-      Rest::respond(Rest::CODE_404_NOT_FOUND, null);
-    }
+    $db->deleteProperty($token, $name);
   } else {
-    // delete complete dataset
-    if ($db->deleteData($token)) {
-      Rest::respond(Rest::CODE_200_OK, true);
-    } else {
-      Rest::respond(Rest::CODE_404_NOT_FOUND, null);
-    }
+    $db->deleteData($token);
   }
+
+  Rest::respond(Rest::CODE_200_OK, true);
 }
