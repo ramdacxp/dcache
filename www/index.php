@@ -9,13 +9,6 @@ $config->loadIfConfigured();
 if ($config->isConfigured()) {
   $db = new Database($config);
   $data = isset($_GET['token']) ? $db->getData($_GET['token']) : null;
-
-  // Show data as JSON
-  if ($_GET['action'] === 'json' && $data !== null) {
-    header('Content-Type: application/json');
-    echo json_encode($data);
-    exit();
-  }
 }
 
 ?>

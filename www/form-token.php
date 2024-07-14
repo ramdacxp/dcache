@@ -18,8 +18,7 @@
   <div id="validation" class="mt-4 text-red-600 hidden">Please enter a valid data token.</div>
 
   <div class="mt-4">
-    <button onclick="return send('show')">Show Data</button>
-    <button onclick="return send('json')">JSON</button>
+    <button onclick="return send('show')">Show Details</button>
   </div>
 
 </form>

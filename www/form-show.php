@@ -21,7 +21,7 @@
   <?php } ?>
 </table>
 
-<?php $jsonUrl = $_SERVER['PHP_SELF'] . '?action=json&token=' . $_GET['token']; ?>
+<?php $jsonUrl = '/api.php?token=' . $_GET['token']; ?>
 
 <p class="mt-4">
   This data set is available as <code>JSON Object</code> at:
