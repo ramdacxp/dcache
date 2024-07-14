@@ -1,0 +1,39 @@
+### ============================================================================
+### This file contains sample HTTP requests to demonstrate the dcache REST API.
+### ============================================================================
+###
+### By default the dcache development server with testdata is used.
+### Requires VSCode with the "REST Client" extension installed.
+###
+
+@server = http://127.0.0.1:8080
+
+
+### GENERAL REQUESTS
+### ============================================================================
+
+### GET API root address
+### -> 500 (internal server error) not configured error
+### -> 400 (bad request) no token given error
+GET {{server}}/api.php HTTP/1.1
+
+
+### GET DATA
+### ============================================================================
+
+### GET with empty token
+### -> 404 (not found) null response
+GET {{server}}/api.php?token= HTTP/1.1
+
+### GET with wrong/unknown token
+### -> 404 (not found) null response
+GET {{server}}/api.php?token=wrongToken HTTP/1.1
+
+### GET with correct token
+### -> 200 (ok) JSON object response
+GET {{server}}/api.php?token=testdata HTTP/1.1
+
+### SET DATA
+### ============================================================================
+
+# Todo
