@@ -1,10 +1,24 @@
 # dcache
 
-_**dcache** is a data cache for [TRMNL](https://usetrmnl.com/)._
+**dcache** is a PHP REST API implementing a JSON data cache.
 
-It receives data from [Home Assistant](https://www.home-assistant.io/) (or other sources) and provides it as a consolidated `JSON Object` to [TRMNL-Plugins](https://help.usetrmnl.com/en/articles/9510536-custom-plugins) (or other targets).
+* The data cache consists of _data sets_ containing multiple _properties_ (as key-value-pairs).
+* A _data set_ is identified by an unique _data token_.
+* _Data Provider_ can create, update, and remove _data sets_.
+* _Consumer_ can query a _data set_ based on a provided _data token_.
 
-A typical flow could look like this:
+A running demo is available at: <https://dcache.schademarmelade.de/>.
+
+![dcache Table View](doc/tableview.png)
+
+Usage examples:
+
+* Selected [Home Assistant](https:c//www.home-assistant.io/) entities can be pushed to _dcache_ and visualized on a [TRMNL](https://usetrmnl.com/) e-ink display via a [custom TRMNL-Plugin](https://help.usetrmnl.com/en/articles/9510536-custom-plugins).
+* The result status of a DevOps build pipeline can be sent _dcache_ and visualized on a WLED led strip.
+* The battery status of multiple IoT devices is available in a single _dcache_ data set.
+* ...
+
+A typical flow between Home Assistant, dcache, and TRMNL could look like this:
 
 * HA provides `temperature=25`
 * HA provides `humidity=65`
@@ -13,17 +27,9 @@ A typical flow could look like this:
 * HA provides `humidity=40`
 * TRMNL receives `{ temperature=25, humidity=40, fan=on }`
 
-dcache provides a REST API to send and receive data as well as an user interface to view the current data.
-Each connection-pair is identified by an unique user defined token.
-Multiple connections are possible in parallel.
+## Server Setup
 
-![dcache Table View](doc/tableview.png)
-
-A running demo is available at: <https://dcache.schademarmelade.de/>.
-
-## Server Usage
-
-Simply upload the `www` folder to your PHP enabled webserver and open the related address in a browser.
+Simply upload the `www` folder to your PHP enabled webserver and open the related address in a browser to setup your database connection.
 
 ## Development Setup
 
@@ -65,6 +71,15 @@ $settings["user"] = "root";
 $settings["password"] = "";
 $settings["prefix"] = "dc-";
 ```
+
+## API Details
+
+The REST API is exposed at `/api.php`.
+
+For a list of supported requests and related responses, please refer to the [`requests.http`](./requests.http) sample file.
+
+All requests can be executed against the provided PHP development webserver in order to test and debug the API.
+This requires VSCode with the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension installed.
 
 ## License
 
