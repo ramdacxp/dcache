@@ -17,7 +17,7 @@ $db = new Database($config);
 
 switch ($_SERVER['REQUEST_METHOD']) {
   case "GET":
-    handleGet($db, $_GET['token'], $_GET['property']);
+    handleGet($db, $_REQUEST['token'], $_REQUEST['property']);
     break;
 
   case "POST":
@@ -25,6 +25,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
     break;
 
   case "DELETE":
+    handleDelete($db, $_REQUEST['token'], $_REQUEST['property']);
+    break;
+
+  default:
     Rest::respondError(Rest::CODE_500_INTERNAL_SERVER_ERROR, "Not implemented.");
     break;
 }
@@ -84,4 +88,28 @@ function handlePost($db, $token, $contentType)
   // done - return new/updated dataset
   $data = $db->getData($token);
   Rest::respond(Rest::CODE_200_OK, $data);
+}
+
+function handleDelete($db, $token, $name = null)
+{
+  if (!isset($token) || is_null($token) || empty($token)) {
+    Rest::respondError(Rest::CODE_400_BAD_REQUEST, "No token given.");
+    return;
+  }
+
+  if (!empty($name)) {
+    // delete singe property only
+    if ($db->deleteProperty($token, $name)) {
+      Rest::respond(Rest::CODE_200_OK, true);
+    } else {
+      Rest::respond(Rest::CODE_404_NOT_FOUND, null);
+    }
+  } else {
+    // delete complete dataset
+    if ($db->deleteData($token)) {
+      Rest::respond(Rest::CODE_200_OK, true);
+    } else {
+      Rest::respond(Rest::CODE_404_NOT_FOUND, null);
+    }
+  }
 }

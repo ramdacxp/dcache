@@ -44,7 +44,7 @@ GET {{server}}/api.php?token=testdata&property=doesnotexist HTTP/1.1
 GET {{server}}/api.php?token=testdata&property=firstname HTTP/1.1
 
 ### ============================================================================
-### SET/POST DATA
+### SET/UPDATE DATA
 ### ============================================================================
 
 ### POST without token
@@ -85,6 +85,34 @@ Content-Type: application/json
   "hello": "World",
   "this": "is a new record"
 }
+
+### ============================================================================
+### DELETE DATA
+### ============================================================================
+
+### DELETE without token
+### -> 400 (bad request) no token given.
+DELETE {{server}}/api.php HTTP/1.1
+
+### DELETE with token not existing token
+### -> 200 (ok) true
+DELETE {{server}}/api.php?token=notthere HTTP/1.1
+
+### DELETE with token and property
+### -> 200 (ok) true
+DELETE {{server}}/api.php?token=testdata&property=newProperty HTTP/1.1
+
+### DELETE with token and property
+### -> 200 (ok) true
+DELETE {{server}}/api.php?token=newdata HTTP/1.1
+
+### ============================================================================
+### Not Supported
+### ============================================================================
+
+### PUT request
+### -> 400 (bad request) Not implemented.
+PUT {{server}}/api.php HTTP/1.1
 
 ### ============================================================================
 ### END USER WEBSITE
