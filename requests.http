@@ -8,6 +8,8 @@
 
 @server = http://127.0.0.1:8080
 
+
+### ============================================================================
 ### GENERAL REQUESTS
 ### ============================================================================
 
@@ -17,6 +19,7 @@
 GET {{server}}/api.php HTTP/1.1
 
 
+### ============================================================================
 ### GET DATA
 ### ============================================================================
 
@@ -40,11 +43,50 @@ GET {{server}}/api.php?token=testdata&property=doesnotexist HTTP/1.1
 ### -> 200 (ok) string response
 GET {{server}}/api.php?token=testdata&property=firstname HTTP/1.1
 
-### SET DATA
+### ============================================================================
+### SET/POST DATA
 ### ============================================================================
 
-POST {{server}}/api.php?token=testdata HTTP/1.1
+### POST without token
+### -> 400 (bad request) no token given.
+POST {{server}}/api.php HTTP/1.1
 
+### POST with token but invalid content type
+### -> 200 (ok) Invalid content type. Expected application/json.
+POST {{server}}/api.php?token=testdata HTTP/1.1
+Content-Type: ascii
+
+### POST with token and correct content type but wrong JSON
+### -> 400 (bad request) Content is not valid JSON.
+POST {{server}}/api.php?token=testdata HTTP/1.1
+Content-Type: application/json
+
+{
+  "newProperty": "some new value",
+  "firstname": "Hans", // <- json error here
+}
+
+### POST with token and correct data
+### -> 200 (ok) JSON object response with merged/updated data
+POST {{server}}/api.php?token=testdata HTTP/1.1
+Content-Type: application/json
+
+{
+  "newProperty": "some new value",
+  "firstname": "Hans"
+}
+
+### POST new dataset
+### -> 200 (ok) JSON object response with merged/updated data
+POST {{server}}/api.php?token=newdata HTTP/1.1
+Content-Type: application/json
+
+{
+  "hello": "World",
+  "this": "is a new record"
+}
+
+### ============================================================================
 ### END USER WEBSITE
 ### ============================================================================
 GET {{server}}/ HTTP/1.1
