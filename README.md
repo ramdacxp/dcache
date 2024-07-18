@@ -80,16 +80,20 @@ For a list of supported requests and related responses, please refer to the [`re
 All requests can be executed against the provided PHP development webserver in order to test and debug the API.
 This requires VSCode with the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension installed.
 
-| Method | URL                                   | Description                               | Success Response               |
-|--------|---------------------------------------|-------------------------------------------|--------------------------------|
-| GET    | `/api.php?token=T`                    | Query complete dataset `T`                | Dataset `T` as object `{...}`  |
-| GET    | `/api.php?token=T&property=P`         | Query property `P` from dataset `T`       | Value of `P` as string `"val"` |
-| GET²   | `/api.php?token=T&property=P&value=V` | Update property `P` to `V` in dataset `T` | Updated dataset `T` as object  |
-| POST   | `/api.php?token=T`                    | Update provided properties in dataset `T` | Updated dataset `T` as object  |
-| DELETE | `/api.php?token=T`                    | Remove complete dataset `T`               | Boolean `true`                 |
-| DELETE | `/api.php?token=T&property=P`         | Remove property `P` from dataset `T`      | Boolean `true`                 |
+| Method | URL                                         | Description                               | Success Response                      |
+|--------|---------------------------------------------|-------------------------------------------|---------------------------------------|
+| GET    | `/api.php?token=T`                          | Query complete dataset `T`                | Dataset `T` as object `{...}`         |
+| GET    | `/api.php?token=T&property=P`               | Query property `P` from dataset `T`       | Value of `P` as string `"val"`        |
+| GET²   | `/api.php?token=T&property=P&value=V`       | Update property `P` to `V` in dataset `T` | Updated dataset `T` as object `{...}` |
+| POST   | `/api.php?token=T`                          | Update provided properties in dataset `T` | Updated dataset `T` as object `{...}` |
+| DELETE | `/api.php?token=T`                          | Remove complete dataset `T`               | Boolean `true`                        |
+| DELETE | `/api.php?token=T&property=P`               | Remove property `P` from dataset `T`      | Boolean `true`                        |
+| GET³   | `/api.php?method=delete&token=T`            | Remove complete dataset `T`               | Boolean `true`                        |
+| GET³   | `/api.php?method=delete&token=T&property=P` | Remove property `P` from dataset `T`      | Boolean `true`                        |
 
-² - This non standard REST operation behaves like a `POST` of the single property `P`, but can be executed from a browser.
+Additional `GET` methods as available to use the complete REST API from a regular web browser:  
+² - This `GET` method behaves like a `POST` of the single property `P`.  
+³ - With the parameter `method=delete` the `DELETE` requests can be invoked via `GET`.
 
 ### Restrictions
 
