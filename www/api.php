@@ -17,7 +17,9 @@ $db = new Database($config);
 
 switch ($_SERVER['REQUEST_METHOD']) {
   case "GET":
-    if (isset($_REQUEST['value'])) {
+    if ($_REQUEST['method'] === "delete") {
+      handleDelete($db, $_REQUEST['token'], $_REQUEST['property']);
+    } elseif (isset($_REQUEST['value'])) {
       handleGetUpdate($db, $_REQUEST['token'], $_REQUEST['property'], $_REQUEST['value']);
     } else {
       handleGet($db, $_REQUEST['token'], $_REQUEST['property']);

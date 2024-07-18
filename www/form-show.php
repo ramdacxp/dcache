@@ -1,3 +1,5 @@
+<?php $jsonUrl = 'api.php?token=' . $_GET['token']; ?>
+
 <h2>Dataset Details</h2>
 
 <p>
@@ -8,26 +10,45 @@
   properties:
 </p>
 
-<table class="datatable mt-4">
-  <tr>
-    <th>Name</th>
-    <th>Value</th>
-  </tr>
-  <?php foreach ($data as $key => $value) { ?>
+<form name="addform" method="get" action="api.php" target="_blank">
+  <input type="hidden" name="token" value="<?= $_GET['token'] ?>">
+  <table class="datatable mt-4">
     <tr>
-      <td><?= $key ?></td>
+      <th>Name</th>
+      <th>Value</th>
+      <th>Links</th>
+    </tr>
+    <?php foreach ($data as $key => $value) { ?>
+      <tr>
+        <td><?= $key ?></td>
+        <td>
+          <code><?= $value ?></code>
+        </td>
+        <td>
+          <a class="underline decoration-dotted hover:decoration-solid text-slate-600" href="<?= $jsonUrl ?>&property=<?= $key ?>" target="_blank">JSON</a>
+          |
+          <a class="underline decoration-dotted hover:decoration-solid text-red-600" href="<?= $jsonUrl ?>&property=<?= $key ?>&method=delete" target="_blank">Delete</a>
+        </td>
+      </tr>
+    <?php } ?>
+    <tr>
       <td>
-        <code><?= $value ?></code>
+        <input name="property" type="text" placeholder="Property Name">
+      </td>
+      <td>
+        <input name="value" type="text" placeholder="New Value">
+      </td>
+      <td>
+        <a class="underline decoration-dotted hover:decoration-solid text-slate-600" href="javascript:addform.submit();">Add</a>
       </td>
     </tr>
-  <?php } ?>
-</table>
+  </table>
+</form>
 
-<?php $jsonUrl = '/api.php?token=' . $_GET['token']; ?>
 
 <p class="mt-4">
   This data set is available as <code>JSON Object</code> at:
-  <a href="<?= $jsonUrl ?>" target="_blank"><code><?= $jsonUrl ?></code></a>
+  <a href="<?= $jsonUrl ?>" target="_blank"><code>/<?= $jsonUrl ?></code></a>
 </p>
 
 <div class="mt-4">
